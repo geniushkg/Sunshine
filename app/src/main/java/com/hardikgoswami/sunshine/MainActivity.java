@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, new PlaceHolderFragment())
                     .commit();
-            Log.d("TAG","Main activity");
         }
     }
     public static class PlaceHolderFragment extends Fragment {
@@ -33,17 +32,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container ,false);
-            Log.d("TAG","placeholder called");
             String[] foreCastArray = {"Today - Sunny 88/63 ", "Tommorow - Cloudy - 77/54",
                     "Wednesday - Clear - 77/88", "Thursday- Sunny -66/44", "Friday- clear - 45/78",
                     "Saturday - Clear - 45/54"};
-            Log.d("TAG","added to array");
             ArrayList<String> foreCastData = new ArrayList<>(Arrays.asList(foreCastArray));
             ArrayAdapter<String> foreCastAdapter = new ArrayAdapter<>(getActivity(),R.layout.list_item_forecast,R.id.list_item_forecast_textview,foreCastData);
             ListView listViewForeCast = (ListView)rootView.findViewById(R.id.listview_forecast);
-            if(foreCastAdapter.isEmpty()){
-                Log.d("TAG","adapter empty");
-            }
             listViewForeCast.setAdapter(foreCastAdapter);
           return rootView;
         }
