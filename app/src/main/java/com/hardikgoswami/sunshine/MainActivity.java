@@ -49,10 +49,10 @@ public class MainActivity extends AppCompatActivity {
             HttpURLConnection httpURLConnection = null;
             BufferedReader reader = null;
             String forecastJsonStr = null;
-            try{
-                // construct new url
-                URL url = new(http://openweathermap);
-            }
+//            try{
+//                // construct new url
+//                URL url = new(http://openweathermap);
+//            }
 
 
           return rootView;
