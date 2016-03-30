@@ -13,12 +13,15 @@ import android.widget.ListView;
 
 import java.io.BufferedReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static String TAG ="SUNSHINE";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,10 +52,12 @@ public class MainActivity extends AppCompatActivity {
             HttpURLConnection httpURLConnection = null;
             BufferedReader reader = null;
             String forecastJsonStr = null;
-//            try{
-//                // construct new url
-//                URL url = new(http://openweathermap);
-//            }
+            try{
+                // construct new url
+                URL url = new URL("http://api.openweathermap.org");
+            }catch (MalformedURLException urlException){
+                Log.d(TAG,"Malformed URL : "+urlException);
+            }
 
 
           return rootView;
