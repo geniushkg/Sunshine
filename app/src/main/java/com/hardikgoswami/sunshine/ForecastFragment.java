@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -54,13 +55,27 @@ public class ForecastFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.forecastfragment,menu);
+        inflater.inflate(R.menu.forecastfragment, menu);
+        Log.d("TAG","fragment  menu inflated");
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d("TAG","Option selected");
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                Log.d("TAG","action refresh performed");
+                return true;
+            default:
+                Toast.makeText(getContext(), "default execute", Toast.LENGTH_SHORT).show();
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     public class FetchWeatherTask extends AsyncTask<Void, Void, Void> {
 
         private String LOG_TAG = FetchWeatherTask.class.getSimpleName();
+
         @Override
         protected Void doInBackground(Void... params) {
 
