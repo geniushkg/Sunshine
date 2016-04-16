@@ -64,6 +64,7 @@ public class ForecastFragment extends Fragment {
             case R.id.action_refresh:
                 Toast.makeText(getContext(), "menu selected refresh ", Toast.LENGTH_SHORT).show();
                 return true;
+
             default:
                 Toast.makeText(getContext(),"default executed",Toast.LENGTH_SHORT).show();
                 return true;
