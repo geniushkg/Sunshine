@@ -55,20 +55,18 @@ public class ForecastFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.forecastfragment, menu);
-        Log.d("TAG","fragment  menu inflated");
+         inflater.inflate(R.menu.forecastfragment,menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d("TAG","Option selected");
-        switch (item.getItemId()) {
+        switch (item.getItemId()){
             case R.id.action_refresh:
-                Log.d("TAG","action refresh performed");
+                Toast.makeText(getContext(), "menu selected refresh ", Toast.LENGTH_SHORT).show();
                 return true;
             default:
-                Toast.makeText(getContext(), "default execute", Toast.LENGTH_SHORT).show();
-                return super.onOptionsItemSelected(item);
+                Toast.makeText(getContext(),"default executed",Toast.LENGTH_SHORT).show();
+                return true;
         }
     }
 
@@ -79,43 +77,31 @@ public class ForecastFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... params) {
 
-// These two need to be declared outside the try/catch
-// so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
-// Will contain the raw JSON response as a string.
             String forecastJsonStr = null;
 
             try {
-                // Construct the URL for the OpenWeatherMap query
-                // Possible parameters are available at OWM's forecast API page, at
-                // http://openweathermap.org/API#forecast
                 URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=94043&mode=json&units=metric&cnt=7");
 
-                // Create the request to OpenWeatherMap, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.connect();
 
-                // Read the input stream into a String
+
                 InputStream inputStream = urlConnection.getInputStream();
                 StringBuffer buffer = new StringBuffer();
                 if (inputStream == null) {
-                    // Nothing to do.
                     return null;
                 }
                 reader = new BufferedReader(new InputStreamReader(inputStream));
 
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
-                    // But it does make debugging a *lot* easier if you print out the completed
-                    // buffer for debugging.
                     buffer.append(line + "\n");
                 }
 
                 if (buffer.length() == 0) {
-                    // Stream was empty.  No point in parsing.
                     return null;
                 }
                 forecastJsonStr = buffer.toString();
@@ -139,5 +125,4 @@ public class ForecastFragment extends Fragment {
             }
         }
     }
-
 }
