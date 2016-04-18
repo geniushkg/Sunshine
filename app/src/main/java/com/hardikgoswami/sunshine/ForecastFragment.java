@@ -61,10 +61,7 @@ public class ForecastFragment extends Fragment {
         return rootView;
     }
 
-    void processFinish(String output){
-        //Here you will receive the result fired from async class
-        //of onPostExecute(result) method.
-    }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -74,13 +71,11 @@ public class ForecastFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_refresh:
-                Toast.makeText(getContext(), "menu selected refresh ", Toast.LENGTH_SHORT).show();
-                Log.d("TAG","refresh log");
                 FetchWeatherTask weatherTask = new FetchWeatherTask();
                 weatherTask.execute("94046");
                 return true;
             default:
-                Toast.makeText(getContext(),"default executed",Toast.LENGTH_SHORT).show();
+                Log.d("TAG","default case executed");
                 return true;
         }
     }
@@ -89,17 +84,21 @@ public class ForecastFragment extends Fragment {
         private String LOG_TAG = FetchWeatherTask.class.getSimpleName();
         private String[] foreCastArray = null;
 
-        public AsyncResponse delegate = null;
-
         @Override
-        protected void onPostExecute(String[] result) {
-            delegate.processFinish(result);
+        protected void onPostExecute(String[] strings) {
+            if(strings != null) {
+                mForeCastAdapter.clear();
+                for(String dayForeCast:strings){
+                    mForeCastAdapter.add(dayForeCast);
+                }
+                mForeCastAdapter.notifyDataSetChanged();
+            }
         }
 
         @Override
         protected String[] doInBackground(String... params) {
 
-            Log.d("TAG","fetch weather executed");
+
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
             String forecastJsonStr = null;
@@ -148,9 +147,7 @@ public class ForecastFragment extends Fragment {
                 forecastJsonStr = buffer.toString();
                 Log.d("TAG","forecast json is : "+forecastJsonStr);
                 foreCastArray = getWeatherDataFromJson(forecastJsonStr,7);
-                for (String s : foreCastArray){
-                    Log.d("TAG","data is : "+s);
-                }
+
 
             } catch (IOException e) {
                 Log.e("TAG", "Error "+e.getMessage());
@@ -161,7 +158,7 @@ public class ForecastFragment extends Fragment {
             } finally {
                 if (urlConnection != null) {
                     urlConnection.disconnect();
-                    Log.d("TAG","url connection disconnected");
+
 
                 }
                 if (reader != null) {
@@ -268,9 +265,7 @@ public class ForecastFragment extends Fragment {
                 resultStrs[i] = day + " - " + description + " - " + highAndLow;
             }
 
-            for (String s : resultStrs) {
-                Log.v(LOG_TAG, "Forecast entry: " + s);
-            }
+
             return resultStrs;
 
         }
@@ -278,8 +273,6 @@ public class ForecastFragment extends Fragment {
 
     }
 
-    public interface AsyncResponse {
-        void processFinish(String[] output);
-    }
+
 
 }
