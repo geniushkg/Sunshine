@@ -91,7 +91,6 @@ public class ForecastFragment extends Fragment {
                 for(String dayForeCast:strings){
                     mForeCastAdapter.add(dayForeCast);
                 }
-                mForeCastAdapter.notifyDataSetChanged();
             }
         }
 
@@ -115,12 +114,12 @@ public class ForecastFragment extends Fragment {
                         .appendQueryParameter("mode","json")
                         .appendQueryParameter("units","metric")
                         .appendQueryParameter("cnt","7")
-                        .appendQueryParameter("APPID","8e7d7fff8df57f165ec4c588739c656e");
+                        .appendQueryParameter("APPID",BuildConfig.OPEN_WEATHER_API);
                 String urlBuilt = builder.build().toString();
             //     String baseUrl = "http://api.openweathermap.org/data/2.5/forecast/daily?q="+postCode+"&mode=json&units=metric&cnt=7";
             //    String apiKey = "&APPID=8e7d7fff8df57f165ec4c588739c656e";// + BuildConfig.OPEN_WEATHER_MAP_API_KEY;
                 URL url = new URL(urlBuilt);
-                Log.d("TAG","url is : "+url);
+
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.connect();
@@ -130,22 +129,18 @@ public class ForecastFragment extends Fragment {
                     Log.d("TAG","input stream null");
                     return null;
                 }
-                Log.d("TAG","input stream is :"+inputStream);
+
                 reader = new BufferedReader(new InputStreamReader(inputStream));
 
                 String line;
                 while ((line = reader.readLine()) != null) {
                     buffer.append(line + "\n");
-                    Log.d("TAG","line is :"+line);
-                    Log.d("TAG","reader content is:"+reader);
                 }
-                Log.d("TAG","buffer content is :"+buffer);
                 if (buffer.length() == 0) {
                     Log.d("TAG","Null buffer");
                     return null;
                 }
                 forecastJsonStr = buffer.toString();
-                Log.d("TAG","forecast json is : "+forecastJsonStr);
                 foreCastArray = getWeatherDataFromJson(forecastJsonStr,7);
 
 
@@ -158,8 +153,6 @@ public class ForecastFragment extends Fragment {
             } finally {
                 if (urlConnection != null) {
                     urlConnection.disconnect();
-
-
                 }
                 if (reader != null) {
                     try {
