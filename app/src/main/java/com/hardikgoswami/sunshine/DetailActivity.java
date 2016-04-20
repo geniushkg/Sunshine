@@ -1,11 +1,13 @@
 package com.hardikgoswami.sunshine;
 
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ShareActionProvider;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,7 +18,8 @@ import android.widget.TextView;
 
 public class DetailActivity extends AppCompatActivity {
 
-   private ShareActionProvider mShareActionProvider;
+
+    private Intent shareIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,20 +33,12 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-    private void setShareIntent(Intent shareIntent) {
-        if (mShareActionProvider != null) {
-            mShareActionProvider.setShareIntent(shareIntent);
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.detail, menu);
-        MenuItem item = menu.findItem(R.id.action_share);
-        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
         return true;
-
     }
 
     @Override
@@ -54,14 +49,12 @@ public class DetailActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (item.getItemId()) {
-            //noinspection SimplifiableIfStatement
             case R.id.action_settings:
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
-            return true;
-            case R.id.action_share:
-                
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
                 return true;
+            case R.id.action_share:
+                return false;
 
         }
         return super.onOptionsItemSelected(item);
@@ -72,22 +65,56 @@ public class DetailActivity extends AppCompatActivity {
      */
     public static class PlaceholderFragment extends Fragment {
 
+        private ShareActionProvider mShareActionProvider;
+        String data = "";
+
         public PlaceholderFragment() {
         }
 
         private TextView textView;
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
             Intent intent = getActivity().getIntent();
-            String data = "";
-            if(intent.getStringExtra("weatherData") != null) {
+
+            if (intent.getStringExtra("weatherData") != null) {
                 data = intent.getStringExtra("weatherData");
             }
             textView = (TextView) rootView.findViewById(R.id.textView);
             textView.setText(data);
+            Log.d("TAG","Fragment set");
             return rootView;
+        }
+
+        @Override
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+            Log.d("TAG","Menu Inflation working");
+            inflater.inflate(R.menu.detail, menu);
+            MenuItem menuItem = menu.findItem(R.id.action_share);
+            Log.d("TAG","Menu Inflation working");
+            // Get the provider and hold onto it to set/change the share intent.
+            mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+            if(mShareActionProvider != null){
+                String textToShare = data + " #SunshineApp";
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, textToShare);
+                shareIntent.setType("plain/text");
+                mShareActionProvider.setShareIntent(shareIntent);
+                Log.d("TAG","mShareActionProvider set done");
+            }else{
+                Log.d("TAG","mShareActionProvider id null");
+            }
+        }
+
+
+        private Intent createShareIntent() {
+            String textToShare = data + " #SunshineApp";
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, textToShare);
+            shareIntent.setType("plain/text");
+            return shareIntent;
         }
     }
 
