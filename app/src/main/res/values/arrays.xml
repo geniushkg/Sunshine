@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pref_temprature_entries">
+        <item>metrics</item>
+        <item>imperials</item>
+    </string-array>
+    <string-array name="pref_temprature_values">
+        <item>metrics</item>
+        <item>imperials</item>
+    </string-array>
+</resources>
