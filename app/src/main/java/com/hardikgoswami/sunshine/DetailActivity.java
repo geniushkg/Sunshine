@@ -71,6 +71,12 @@ public class DetailActivity extends AppCompatActivity {
         public PlaceholderFragment() {
         }
 
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setHasOptionsMenu(true);
+        }
+
         private TextView textView;
 
         @Override
@@ -90,10 +96,8 @@ public class DetailActivity extends AppCompatActivity {
 
         @Override
         public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-            Log.d("TAG","Menu Inflation working");
-            inflater.inflate(R.menu.detail, menu);
+            inflater.inflate(R.menu.detailfragment, menu);
             MenuItem menuItem = menu.findItem(R.id.action_share);
-            Log.d("TAG","Menu Inflation working");
             // Get the provider and hold onto it to set/change the share intent.
             mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
             if(mShareActionProvider != null){
@@ -102,20 +106,11 @@ public class DetailActivity extends AppCompatActivity {
                 shareIntent.putExtra(Intent.EXTRA_TEXT, textToShare);
                 shareIntent.setType("plain/text");
                 mShareActionProvider.setShareIntent(shareIntent);
-                Log.d("TAG","mShareActionProvider set done");
             }else{
                 Log.d("TAG","mShareActionProvider id null");
             }
         }
 
-
-        private Intent createShareIntent() {
-            String textToShare = data + " #SunshineApp";
-            Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            shareIntent.putExtra(Intent.EXTRA_TEXT, textToShare);
-            shareIntent.setType("plain/text");
-            return shareIntent;
-        }
     }
 
 }
