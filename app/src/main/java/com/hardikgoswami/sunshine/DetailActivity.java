@@ -103,6 +103,7 @@ public class DetailActivity extends AppCompatActivity {
             if(mShareActionProvider != null){
                 String textToShare = data + " #SunshineApp";
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
                 shareIntent.putExtra(Intent.EXTRA_TEXT, textToShare);
                 shareIntent.setType("plain/text");
                 mShareActionProvider.setShareIntent(shareIntent);
