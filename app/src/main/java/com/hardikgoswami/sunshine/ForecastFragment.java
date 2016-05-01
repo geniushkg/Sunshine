@@ -143,8 +143,6 @@ public class ForecastFragment extends Fragment {
                         .appendQueryParameter("cnt","7")
                         .appendQueryParameter("APPID",BuildConfig.OPEN_WEATHER_API);
                 String urlBuilt = builder.build().toString();
-            //     String baseUrl = "http://api.openweathermap.org/data/2.5/forecast/daily?q="+postCode+"&mode=json&units=metric&cnt=7";
-            //    String apiKey = "&APPID=8e7d7fff8df57f165ec4c588739c656e";// + BuildConfig.OPEN_WEATHER_MAP_API_KEY;
                 URL url = new URL(urlBuilt);
 
                 urlConnection = (HttpURLConnection) url.openConnection();
